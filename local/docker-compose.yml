@@ -1,0 +1,81 @@
+version: "3.8"
+networks:
+  private:
+volumes:
+  venn-mysql-data:
+services:
+  adminer:
+    image: adminer
+    networks:
+      - private
+    ports:
+      - target: 9080
+        published: 9080
+        protocol: tcp
+        mode: host
+  webapp:
+    build:
+      context: frontend
+      dockerfile: docker/react-app/Dockerfile
+      target: local
+      args:
+        webapp_name: "webapp"
+    networks:
+      - private
+    volumes:
+      - "./frontend/webapp:/webapp"
+    ports:
+      - target: 3000
+        published: 9000
+        protocol: tcp
+        mode: host
+    environment:
+      - BOOT_ENV=${BOOT_ENV}
+      - BOOT_BUILD_ID=local
+      - REACT_APP_BASE_API_URL=http://localhost:9010
+
+  venn:
+    build:
+      context: backend
+      dockerfile: docker/svc/Dockerfile
+      target: local
+      args:
+        service_name: "venn"
+    networks:
+      - private
+    ports:
+      - target: 9010 
+        published: 9010
+        protocol: tcp
+        mode: host
+
+    volumes:
+      - "./backend/venn:/venn"
+    environment:
+      - GIN_MODE=debug
+      - BOOT_ENV=${BOOT_ENV}
+      - BOOT_DEBUG=true
+      - BOOT_BUILD_ID=local
+      - LISTEN_PORT=4000
+      - DB_ORMLogLevel=info
+    depends_on:
+      - venn-mysql
+  venn-mysql:
+    image: mysql:5.7
+    networks:
+      - private
+    environment:
+      - MYSQL_ROOT_PASSWORD=venn
+      - MYSQL_USER=venn
+      - MYSQL_PASSWORD=venn
+      - MYSQL_DATABASE=venn
+    ports:
+      - target: 3306
+        published: 33060
+        protocol: tcp
+        mode: host
+    volumes:
+      - venn-mysql-data:/var/lib/mysql
+      - ./backend/venn/src/dal/schema:/docker-entrypoint-initdb.d
+    command: ['--character-set-server=utf8', '--collation-server=utf8_unicode_ci']
+
