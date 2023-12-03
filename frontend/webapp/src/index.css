@@ -9,3 +9,9 @@ body {
 .Header{
     border-bottom: 1px solid #ddd;
 }
+
+.TableSorter{
+    cursor:pointer;
+}
+
+.PublicTransportAvailabilityLowNone{color:red;}
