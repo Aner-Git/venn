@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import type { SortingState } from "@tanstack/react-table";
 import NeighborhoodTable from "./NeighborhoodTable";
 import useOnPage from "../pagination/hooks";
 import { Paginator } from "../pagination/Paginator";
-
+import Filters from "./filters/Filters";
+import { Stack } from "react-bootstrap";
+import filtersReducer from "./filters/filtersReducer";
+import { initialFilters } from "./filters/initialFilters";
 type Props = {};
 
 const hoodData = [
@@ -43,24 +46,27 @@ const hoodData = [
 const NeighborhoodPanel = ({}: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [page, handlePrev, handleNext] = useOnPage(1);
+  const [filters, dispatch] = useReducer(filtersReducer, initialFilters);
 
-  console.log(sorting);
-  //come from server
+  //TODO come from server
   const pg = { page: 1, page_size: 25, total: 3 };
   const onPage = Paginator.onPage(pg.page, pg.page_size, pg.total);
   return (
-    <Paginator
-      handleNext={handleNext}
-      handlePrev={handlePrev}
-      onfirst={onPage.first}
-      onlast={onPage.last}
-    >
-      <NeighborhoodTable
-        data={hoodData}
-        onSorting={setSorting}
-        sorting={sorting}
-      />
-    </Paginator>
+    <Stack gap={4}>
+      <Filters filters={filters} dispatch={dispatch} />
+      <Paginator
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        onfirst={onPage.first}
+        onlast={onPage.last}
+      >
+        <NeighborhoodTable
+          data={hoodData}
+          onSorting={setSorting}
+          sorting={sorting}
+        />
+      </Paginator>
+    </Stack>
   );
 };
 
