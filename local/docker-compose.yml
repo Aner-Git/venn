@@ -44,7 +44,7 @@ services:
     networks:
       - private
     ports:
-      - target: 9010 
+      - target: 8080 
         published: 9010
         protocol: tcp
         mode: host
@@ -57,7 +57,6 @@ services:
       - BOOT_DEBUG=true
       - BOOT_BUILD_ID=local
       - LISTEN_PORT=4000
-      - DB_ORMLogLevel=info
     depends_on:
       - venn-mysql
   venn-mysql:
