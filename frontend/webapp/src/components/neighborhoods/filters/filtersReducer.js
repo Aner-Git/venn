@@ -12,6 +12,12 @@ const filtersReducer = (filters, action) => {
         maxdistance: { ...filters["maxdistance"], value: action.value },
       };
     }
+    case "agerange": {
+      return {
+        ...filters,
+        agerange: { ...filters["agerange"], [action.name]: action.value },
+      };
+    }
     default:
       throw Error("Unknown action: " + action.type);
   }

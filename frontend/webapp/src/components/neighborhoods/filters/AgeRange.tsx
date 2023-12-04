@@ -1,19 +1,27 @@
 import Form from "react-bootstrap/Form";
 import { ChangeEvent } from "react";
+
 type Field = {
   name: string;
-  value: number;
+  value: number | "";
 };
 
 type Props = {
-  min: number;
-  max: number;
+  min: number | "";
+  max: number | "";
   onChange: (e: Field) => void;
 };
 
 const AgeRange = ({ min, max, onChange }: Props) => {
-  //    const handleChange = (e:ChangeEvent<HTMLInputElement>)=>{ onChange({name:e.target.name, value:e.target.value})
-  const handleChange = () => {};
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let value = parseInt(e.target.value);
+    if (isNaN(value)) {
+      onChange({ name: e.target.name, value: "" });
+      return;
+    }
+
+    onChange({ name: e.target.name, value: value });
+  };
 
   return (
     <Form.Group className="mb-3">
@@ -36,3 +44,4 @@ const AgeRange = ({ min, max, onChange }: Props) => {
 };
 
 export default AgeRange;
+export { Field };

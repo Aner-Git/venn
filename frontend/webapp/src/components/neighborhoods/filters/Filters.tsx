@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import FilterSelect from "./FilterSelect";
 import FilterBar from "./FilterBar";
 import MaxDistance from "./MaxDistance";
-import AgeRange from "./AgeRange";
+import AgeRange, { Field } from "./AgeRange";
 
 type Props = { filters: any; dispatch: (e: any) => void };
 
@@ -14,6 +14,10 @@ const Filters = ({ filters, dispatch }: Props) => {
 
   const handleMaxDistanceChange = (value: number) => {
     dispatch({ type: "maxdistance", value: value });
+  };
+
+  const handleAgeRangeChange = (e: Field) => {
+    dispatch({ ...e, type: "agerange" });
   };
 
   return (
@@ -32,6 +36,7 @@ const Filters = ({ filters, dispatch }: Props) => {
         )}
         {filters["agerange"].active && (
           <AgeRange
+            onChange={handleAgeRangeChange}
             min={filters["agerange"].min}
             max={filters["agerange"].max}
           />
