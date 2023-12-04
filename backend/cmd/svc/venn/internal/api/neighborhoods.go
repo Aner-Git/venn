@@ -1,12 +1,12 @@
 package api
 
 import (
-	"net/http"
-
+	"github.com/Aner-Git/venn/backend/cmd/svc/venn/internal/dal/model"
 	"github.com/gin-gonic/gin"
 )
 
-type NeighborhoodDB struct {
+type NeighborhoodDB interface {
+	GetNeighborhoods() ([]*model.Neighborhood, error)
 }
 
 type NeighborhoodAPI struct {
@@ -15,5 +15,9 @@ type NeighborhoodAPI struct {
 
 func (n *NeighborhoodAPI) GetClients(c *gin.Context) {
 
-	c.String(http.StatusOK, "hoods")
+	hoods, err := n.DB.GetNeighborhoods()
+	if success := successOrAbort(c, 500, err); !success {
+		return
+	}
+	c.JSON(200, hoods)
 }

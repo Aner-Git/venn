@@ -11,5 +11,5 @@ func NewLoader(DB *GormDatabase) *Loader {
 }
 
 func (l *Loader) Migrate() error {
-	return l.db.DB.AutoMigrate(&model.Neighborhood{})
+	return l.db.DB.AutoMigrate(&model.Neighborhood{}, &model.PublicTransportAvailablity{})
 }

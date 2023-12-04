@@ -12,7 +12,7 @@ func Setup(db *database.GormDatabase) *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
-	neighborhoods := &api.NeighborhoodAPI{}
+	neighborhoods := &api.NeighborhoodAPI{DB: db}
 	//Get
 	r.GET("/neighborhoods", neighborhoods.GetClients)
 
