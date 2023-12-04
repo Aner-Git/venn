@@ -80,6 +80,7 @@ func (c *MySQLConfig) SetDefaults(serviceName string) {
 	c.Name = serviceName
 	c.Host = serviceName
 	c.User = serviceName
+	c.Password = serviceName
 	c.Host = serviceName + "-mysql"
 }
 

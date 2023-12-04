@@ -16,6 +16,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	loader := database.NewLoader(db)
+	err = loader.Migrate()
+
+	if err != nil {
+		panic(err)
+	}
 
 	r := router.Setup(db)
 	// Listen and Server in 0.0.0.0:8080
