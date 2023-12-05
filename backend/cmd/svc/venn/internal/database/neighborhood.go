@@ -8,7 +8,7 @@ import (
 func (d *GormDatabase) GetNeighborhoods(orderBy string, page, pageSize int) ([]*model.Neighborhood, error) {
 	var hoods []*model.Neighborhood
 	var err error
-	q := d.DB.Debug().Joins("PublicTransportAvailablity").Order(orderBy).Scopes(dal.PaginateDefault(page, pageSize))
+	q := d.DB.Joins("PublicTransportAvailablity").Order(orderBy).Scopes(dal.PaginateDefault(page, pageSize))
 	err = q.Find(&hoods).Error
 	return hoods, err
 }
