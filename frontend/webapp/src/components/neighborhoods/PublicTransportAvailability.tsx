@@ -1,7 +1,7 @@
 type Props = { value: string | null };
 
 const PublicTransportAvailability = ({ value }: Props) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     return <>-</>;
   }
   let clz = "";
