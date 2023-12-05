@@ -7,22 +7,29 @@ import useOnPage from "../pagination/hooks";
 import { Paginator } from "../pagination/Paginator";
 import Filters from "./filters/Filters";
 import filtersReducer from "./filters/filtersReducer";
-import { initialFilters } from "./filters/initialFilters";
+import { filterList } from "./filters/filterList.js";
+import { hasActiveFilters } from "./filters/utils";
 import Error from "../errors/Error";
 import useNeighborhoodstQuery from "./hooks";
 
 const NeighborhoodPanel = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [page, handlePrev, handleNext] = useOnPage(1);
-  const [filters, dispatch] = useReducer(filtersReducer, initialFilters);
+  const [filters, dispatch] = useReducer(filtersReducer, filterList);
 
-  const { isLoading, isError, isSuccess, data, error } = useNeighborhoodstQuery(
-    {
-      page,
-      pageSize: Paginator.defaultPageSize,
-    },
-    sorting
-  );
+  const { isLoading, isError, isSuccess, data, error, refetch } =
+    useNeighborhoodstQuery(
+      {
+        page,
+        pageSize: Paginator.defaultPageSize,
+      },
+      sorting,
+      !hasActiveFilters(filters)
+    );
+
+  const handleFilterQuery = () => {
+    refetch();
+  };
 
   let content = null;
   if (isLoading) {
@@ -55,7 +62,12 @@ const NeighborhoodPanel = () => {
 
   return (
     <Stack gap={4}>
-      <Filters filters={filters} dispatch={dispatch} />
+      <Filters
+        filters={filters}
+        filtersActive={hasActiveFilters(filters)}
+        dispatch={dispatch}
+        onFilterQuery={handleFilterQuery}
+      />
       {content}
     </Stack>
   );

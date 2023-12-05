@@ -1,4 +1,4 @@
-const initialFilters = {
+const filterList = {
   maxdistance: {
     active: false,
     value: 10,
@@ -15,4 +15,4 @@ const initialFilters = {
   },
 };
 
-export { initialFilters };
+export { filterList };
