@@ -21,7 +21,7 @@ func Setup(db *database.GormDatabase) *gin.Engine {
 
 	neighborhoods := &api.NeighborhoodAPI{DB: db}
 	//Get
-	r.GET("/neighborhoods", parsePaginationDefault(), neighborhoods.GetClients)
+	r.GET("/neighborhoods", parsePaginationDefault(), parseSortDefault(), neighborhoods.GetNeighborhoods)
 
 	return r
 }

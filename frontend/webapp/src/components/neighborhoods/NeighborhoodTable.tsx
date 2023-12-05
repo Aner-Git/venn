@@ -19,8 +19,9 @@ type Props = {
 };
 
 type Neighborhood = {
-  neigborhood: string;
+  neighborhood: string;
   city: string;
+  state: string;
   average_age: number;
   distance_from_city_center: number;
   public_transport_availability: string | null;
@@ -32,13 +33,17 @@ const columnHelper = createColumnHelper<Neighborhood>();
 
 function getColumns() {
   return [
-    columnHelper.accessor("neigborhood", {
+    columnHelper.accessor("neighborhood", {
       header: "Name",
       cell: (props: any) => <>{props.getValue()}</>,
     }),
 
     columnHelper.accessor("city", {
       header: "City",
+      cell: (props: any) => <>{props.getValue()}</>,
+    }),
+    columnHelper.accessor("state", {
+      header: "State",
       cell: (props: any) => <>{props.getValue()}</>,
     }),
     columnHelper.accessor("average_age", {

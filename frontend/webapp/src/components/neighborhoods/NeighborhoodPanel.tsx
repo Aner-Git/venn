@@ -10,9 +10,8 @@ import filtersReducer from "./filters/filtersReducer";
 import { initialFilters } from "./filters/initialFilters";
 import Error from "../errors/Error";
 import useNeighborhoodstQuery from "./hooks";
-type Props = {};
 
-const NeighborhoodPanel = ({}: Props) => {
+const NeighborhoodPanel = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [page, handlePrev, handleNext] = useOnPage(1);
   const [filters, dispatch] = useReducer(filtersReducer, initialFilters);
@@ -21,7 +20,8 @@ const NeighborhoodPanel = ({}: Props) => {
     {
       page,
       pageSize: Paginator.defaultPageSize,
-    }
+    },
+    sorting
   );
 
   let content = null;

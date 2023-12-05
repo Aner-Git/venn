@@ -1,14 +1,15 @@
 package database
 
 import (
+	"github.com/Aner-Git/venn/backend/cmd/svc/venn/internal/dal"
 	"github.com/Aner-Git/venn/backend/cmd/svc/venn/internal/dal/model"
 )
 
-func (d *GormDatabase) GetNeighborhoods(offset, limit int) ([]*model.Neighborhood, error) {
+func (d *GormDatabase) GetNeighborhoods(orderBy string, page, pageSize int) ([]*model.Neighborhood, error) {
 	var hoods []*model.Neighborhood
 	var err error
-	err = d.DB.Joins("PublicTransportAvailablity").Order("name").Offset(offset).Limit(limit).Find(&hoods).Error
-
+	q := d.DB.Debug().Joins("PublicTransportAvailablity").Order(orderBy).Scopes(dal.PaginateDefault(page, pageSize))
+	err = q.Find(&hoods).Error
 	return hoods, err
 }
 

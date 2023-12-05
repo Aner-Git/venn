@@ -1,7 +1,6 @@
 import NeighborhoodPanel from "./neighborhoods/NeighborhoodPanel";
-type Props = {};
 
-const Neighborhoods = ({}: Props) => {
+const Neighborhoods = () => {
   return <NeighborhoodPanel />;
 };
 
