@@ -75,6 +75,6 @@ services:
         mode: host
     volumes:
       - venn-mysql-data:/var/lib/mysql
-      - ./backend/venn/src/dal/schema:/docker-entrypoint-initdb.d
+      - ./backend/cmd/svc/venn/internal/dal/schema:/docker-entrypoint-initdb.d
     command: ['--character-set-server=utf8', '--collation-server=utf8_unicode_ci']
 
