@@ -2,6 +2,7 @@ package neighborhoods
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -35,10 +36,10 @@ func GetFilters(ctx *gin.Context) ([]any, error) {
 		var data []int
 		err := json.Unmarshal([]byte(val), &data)
 		if err != nil {
-			return []any{}, nil
+			return []any{}, err
 		}
-		if len(data) != 1 {
-			return []any{}, nil
+		if len(data) != 1 || data[0] < 0 {
+			return []any{}, errors.New("invalid max distance value")
 		}
 		query = append(query, "distance_from_city_center <= ?")
 		values = append(values, data[0])
@@ -51,8 +52,8 @@ func GetFilters(ctx *gin.Context) ([]any, error) {
 			return []any{}, nil
 		}
 
-		if len(data) != 2 {
-			return []any{}, nil
+		if len(data) != 2 || data[0] < 1 || data[1] > 120 {
+			return []any{}, errors.New("invalid age ranges")
 		}
 
 		query = append(query, "average_age BETWEEN  ? AND ?")
