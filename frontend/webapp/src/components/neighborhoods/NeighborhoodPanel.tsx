@@ -30,7 +30,7 @@ const NeighborhoodPanel = () => {
       //reset to first page
       reset();
     }
-  });
+  }, [filters, reset]);
 
   const { isLoading, isError, isSuccess, data, error } = useNeighborhoodstQuery(
     {
