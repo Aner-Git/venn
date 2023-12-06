@@ -4,6 +4,9 @@ const filterList = {
     value: 10,
     name: "Max Distance",
     id: "maxdistance",
+    export: function () {
+      return [this.value];
+    },
   },
 
   agerange: {
@@ -12,6 +15,9 @@ const filterList = {
     max: 50,
     name: "Age Range",
     id: "agerange",
+    export: function () {
+      return [this.min, this.max];
+    },
   },
 };
 

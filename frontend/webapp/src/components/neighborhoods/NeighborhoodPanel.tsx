@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 import type { SortingState } from "@tanstack/react-table";
 import NeighborhoodTable from "./NeighborhoodTable";
 import Stack from "react-bootstrap/Stack";
@@ -8,7 +8,7 @@ import { Paginator } from "../pagination/Paginator";
 import Filters from "./filters/Filters";
 import filtersReducer from "./filters/filtersReducer";
 import { filterList } from "./filters/filterList.js";
-import { hasActiveFilters } from "./filters/utils";
+import { hasActiveFilters, getFilters } from "./filters/utils";
 import Error from "../errors/Error";
 import useNeighborhoodstQuery from "./hooks";
 
@@ -16,20 +16,26 @@ const NeighborhoodPanel = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [page, handlePrev, handleNext] = useOnPage(1);
   const [filters, dispatch] = useReducer(filtersReducer, filterList);
-
-  const { isLoading, isError, isSuccess, data, error, refetch } =
-    useNeighborhoodstQuery(
-      {
-        page,
-        pageSize: Paginator.defaultPageSize,
-      },
-      sorting,
-      !hasActiveFilters(filters)
-    );
+  const [queryFilters, setQueryFilters] = useState({});
 
   const handleFilterQuery = () => {
-    refetch();
+    setQueryFilters(getFilters(filters));
   };
+
+  useEffect(() => {
+    if (!hasActiveFilters(filters)) {
+      setQueryFilters({});
+    }
+  });
+
+  const { isLoading, isError, isSuccess, data, error } = useNeighborhoodstQuery(
+    {
+      page,
+      pageSize: Paginator.defaultPageSize,
+    },
+    sorting,
+    queryFilters
+  );
 
   let content = null;
   if (isLoading) {
@@ -59,7 +65,6 @@ const NeighborhoodPanel = () => {
       </Paginator>
     );
   }
-
   return (
     <Stack gap={4}>
       <Filters
