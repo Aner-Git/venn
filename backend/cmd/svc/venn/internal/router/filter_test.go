@@ -14,13 +14,13 @@ func TestParseFilterDefault(t *testing.T) {
 	assert.NotNil(t, got)
 }
 
-func TestFilterNullNoFilterQuery(t *testing.T) {
+func TestFiltersEmptyNoFilterQuery(t *testing.T) {
 	got := parseFilter([]string{})
 	assert.NotNil(t, got)
 	ctx := &gin.Context{}
 	got(ctx)
-	_, exist := ctx.Get(filterText)
-	assert.False(t, exist)
+	f := ctx.GetStringMap(filterText)
+	assert.True(t, len(f) == 0)
 }
 
 func TestParseQueryFilter(t *testing.T) {

@@ -14,17 +14,21 @@ import useNeighborhoodstQuery from "./hooks";
 
 const NeighborhoodPanel = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [page, handlePrev, handleNext] = useOnPage(1);
+  const [page, handlePrev, handleNext, reset] = useOnPage(1);
   const [filters, dispatch] = useReducer(filtersReducer, filterList);
   const [queryFilters, setQueryFilters] = useState({});
 
   const handleFilterQuery = () => {
     setQueryFilters(getFilters(filters));
+    //reset to first page
+    reset();
   };
 
   useEffect(() => {
     if (!hasActiveFilters(filters)) {
       setQueryFilters({});
+      //reset to first page
+      reset();
     }
   });
 

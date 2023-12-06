@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var filters = []string{"agerange", "maxdistance"}
+var filtersNeighborhood = []string{"agerange", "maxdistance"}
 var filterText = "filters"
 
 var (
@@ -14,9 +14,9 @@ var (
 )
 
 // Create a new filter middleware
-func parseFilterDefault() gin.HandlerFunc {
+func parseFilterNeighborhood() gin.HandlerFunc {
 	return parseFilter(
-		filters,
+		filtersNeighborhood,
 	)
 }
 
@@ -32,9 +32,7 @@ func parseFilter(filters []string) gin.HandlerFunc {
 		}
 
 		// Set filters the gin context
-		if len(filters) != 0 {
-			c.Set(filterText, filterMap)
-		}
+		c.Set(filterText, filterMap)
 
 		c.Next()
 	}

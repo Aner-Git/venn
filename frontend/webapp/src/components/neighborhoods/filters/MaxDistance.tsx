@@ -16,6 +16,8 @@ const MaxDistance = ({ value, onChange }: Props) => {
     <Form.Group className="mb-3">
       <Form.Label>Max Distance</Form.Label>
       <Form.Select value={value} onChange={handleChange}>
+        <option value="1">1</option>
+        <option value="2">2</option>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="15">15</option>

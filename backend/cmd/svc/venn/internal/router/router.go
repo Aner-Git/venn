@@ -11,7 +11,6 @@ var db = make(map[string]string)
 
 func Setup(db *database.GormDatabase) *gin.Engine {
 	// Disable Console Color
-	// gin.DisableConsoleColor()
 	r := gin.Default()
 
 	//cors: to configure later...
@@ -21,7 +20,7 @@ func Setup(db *database.GormDatabase) *gin.Engine {
 
 	neighborhoods := &api.NeighborhoodAPI{DB: db}
 	//Get
-	r.GET("/neighborhoods", parsePaginationDefault(), parseSortDefault(), neighborhoods.GetNeighborhoods)
+	r.GET("/neighborhoods", parsePaginationDefault(), parseSortDefault(), parseFilterNeighborhood(), neighborhoods.GetNeighborhoods)
 
 	return r
 }
